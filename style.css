@@ -1,0 +1,102 @@
+* { box-sizing: border-box; }
+:root {
+  color-scheme: dark;
+  --bg: #131b21;
+  --mint: #9ce3cf;
+  --pink: #f3a99f;
+  --muted: #9aa9b1;
+}
+html { min-height: 100%; background: var(--bg); }
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(ellipse at 50% 43%, rgba(47, 87, 91, .20), transparent 48%),
+    var(--bg);
+  color: #f4e9e6;
+  font-family: ui-serif, Georgia, "Times New Roman", serif;
+}
+.scene {
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  padding: max(24px, env(safe-area-inset-top)) 16px max(18px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2.5dvh, 24px);
+  position: relative;
+  isolation: isolate;
+}
+.heading { text-align: center; z-index: 1; width: 100%; }
+.eyebrow {
+  color: var(--mint); text-transform: uppercase; letter-spacing: .24em;
+  font: 500 9px/1.5 system-ui, sans-serif; margin: 0 0 9px;
+}
+h1 {
+  margin: 0; font-weight: 400; font-size: clamp(23px, 6.5vw, 36px);
+  line-height: 1.12; letter-spacing: -.045em;
+}
+h1 span:first-of-type { color: #f0b2a8; font-style: italic; }
+.tulip { font-size: .72em; display: inline-block; vertical-align: .08em; }
+.subtitle { color: #9eabb2; font: 400 11px/1.5 system-ui, sans-serif; letter-spacing: .11em; margin: 9px 0 0; }
+.artwork {
+  position: relative; width: min(88vw, 420px); max-width: 100%;
+  display: flex; flex-direction: column; align-items: center;
+}
+#flower-frame { display: block; width: 100%; height: auto; overflow: visible; position: relative; z-index: 1; }
+.glow {
+  position: absolute; width: 72%; aspect-ratio: 1; top: 27%; left: 14%;
+  border-radius: 50%; background: rgba(102, 183, 164, .075);
+  filter: blur(32px); pointer-events: none;
+}
+.caption { margin: -1px 0 0; color: #7eaaa6; font: 10px/1.5 system-ui, sans-serif; letter-spacing: .14em; }
+footer { text-align: center; color: #657982; font: 9px/1.5 system-ui, sans-serif; letter-spacing: .08em; }
+#BaseGroup .draw, #Flourish .draw {
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: draw 2.4s ease forwards;
+}
+#Flourish .draw:nth-child(2n) { animation-delay: .3s; }
+#Flourish .draw:nth-child(3n) { animation-delay: .6s; }
+#LeafGroup use, #PinkFlowerGroup use, #BudGroup g, #Dots circle {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bloom .75s cubic-bezier(.2,.8,.2,1) forwards;
+}
+#LeafGroup use:nth-child(odd) { animation-delay: .65s; }
+#LeafGroup use:nth-child(even) { animation-delay: .85s; }
+#PinkFlowerGroup use { animation-delay: 1.25s; }
+#PinkFlowerGroup use:nth-child(3n) { animation-delay: 1.55s; }
+#BudGroup g { animation-delay: 1.8s; }
+#Dots circle { animation: twinkle 3.5s ease-in-out infinite alternate; animation-delay: calc(1.6s + var(--i, 0) * .15s); }
+#Dots circle:nth-child(2n) { --i: 2; }
+#Dots circle:nth-child(3n) { --i: 4; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes bloom { 0% { opacity: 0; scale: .45; } 100% { opacity: 1; scale: 1; } }
+@keyframes twinkle { from { opacity: .25; scale: .7; } to { opacity: .95; scale: 1.15; } }
+@media (max-height: 700px) {
+  .scene { gap: 8px; padding-top: max(12px, env(safe-area-inset-top)); padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+  .eyebrow { margin-bottom: 5px; }
+  .subtitle { margin-top: 5px; }
+  .artwork { width: min(72vw, 330px); }
+  footer { font-size: 8px; }
+}
+@media (max-width: 360px) {
+  .scene { padding-left: 12px; padding-right: 12px; }
+  .artwork { width: min(88vw, 320px); }
+  h1 { font-size: clamp(21px, 6.3vw, 25px); }
+}
+@media (min-width: 700px) {
+  .scene { gap: 16px; }
+  .artwork { width: min(62vw, 440px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  #BaseGroup .draw, #Flourish .draw { stroke-dashoffset: 0; }
+  #LeafGroup use, #PinkFlowerGroup use, #BudGroup g, #Dots circle { opacity: 1; }
+}
